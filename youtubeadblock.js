@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AdBlock for YouTube
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  removes ads from youtube, and the annoying popups.
 // @author       FairyRoot
 // @match        https://www.youtube.com/*
@@ -18,13 +18,12 @@
 (function() {
     // Config
     const adblocker = true;
-    const removePopup = true;
+    const removePopup = false;
     const debugMessages = true;
     const fixTimestamps = true;
 
     // Variables
     let currentUrl = window.location.href;
-    let userPaused = false;
 
     // Setup
     log("Script started");
@@ -32,6 +31,7 @@
     if (adblocker) removeAds();
     if (removePopup) popupRemover();
     if (fixTimestamps) timestampFix();
+    removeUnwantedElements();
 
     function popupRemover() {
         setInterval(() => {
@@ -64,17 +64,8 @@
                 log("Popup removed");
             }
 
-            // Remove <ytd-enforcement-message-view-model>
-            const enforcementMessage = document.querySelector("ytd-enforcement-message-view-model");
-            if (enforcementMessage) {
-                log("Enforcement message detected, removing...");
-                enforcementMessage.remove();
-                log("Enforcement message removed");
-            }
-
-            if (!video.paused && !userPaused) {
-                video.play();
-            }
+            if (!video.paused) return;
+            video.play();
         }, 500);
     }
 
@@ -93,7 +84,7 @@
             }
 
             const video = document.querySelector('video');
-            if (video && !video.paused && !userPaused) {
+            if (video && !video.paused) {
                 video.pause();
                 video.play();
             }
@@ -123,8 +114,7 @@
             .ytd-promoted-sparkles-text-search-renderer,
             .video-ads,
             #player-ads,
-            #panels,
-            ytd-enforcement-message-view-model
+            #panels
             {
                 display: none !important;
             }
@@ -148,24 +138,25 @@
         }, 1000);
     }
 
+    function removeUnwantedElements() {
+        setInterval(() => {
+            const enforcementMessage = document.querySelector("ytd-enforcement-message-view-model");
+            if (enforcementMessage) {
+                log("Enforcement message detected, removing...");
+                enforcementMessage.remove();
+                log("Enforcement message removed");
+            }
+
+            const ironOverlayBackdrop = document.querySelector("tp-yt-iron-overlay-backdrop");
+            if (ironOverlayBackdrop) {
+                log("Iron overlay backdrop detected, removing...");
+                ironOverlayBackdrop.remove();
+                log("Iron overlay backdrop removed");
+            }
+        }, 500);
+    }
+
     function log(message) {
         if (debugMessages) console.log(`[AdBlock for YouTube] ${message}`);
     }
-
-    // Add event listeners to detect user interactions
-    document.addEventListener('keydown', (event) => {
-        if (event.code === 'Space' || event.code === 'KeyK') {
-            const video = document.querySelector('video');
-            if (video && !userPaused) {
-                userPaused = video.paused;
-            }
-        }
-    });
-
-    document.addEventListener('click', (event) => {
-        const video = document.querySelector('video');
-        if (video && !userPaused) {
-            userPaused = video.paused;
-        }
-    });
 })();
