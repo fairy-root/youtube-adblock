@@ -5,8 +5,14 @@
 // @description  removes ads from youtube, and the annoying popups.
 // @author       FairyRoot
 // @match        https://www.youtube.com/*
+// @exclude      *://music.youtube.com/*
+// @exclude      *://*.music.youtube.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=youtube.com
 // @grant        none
+// @license MIT
+// @namespace https://github.com/fairy-root
+// @downloadURL https://raw.githubusercontent.com/fairy-root/youtube-adblock/main/youtubeadblock.js
+// @updateURL https://raw.githubusercontent.com/fairy-root/youtube-adblock/main/youtubeadblock.js
 // ==/UserScript==
 
 (function() {
