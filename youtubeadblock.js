@@ -72,24 +72,44 @@
     function removeAds() {
         log("removeAds()");
 
-        setInterval(() => {
-            if (window.location.href !== currentUrl) {
-                currentUrl = window.location.href;
-                removePageAds();
+        let isShortsPage = window.location.href.includes("shorts");
+        let video = document.querySelector('video');
+
+        // Initial check and setup
+        if (video && !video.paused && !isShortsPage) {
+            video.pause();
+            video.play();
+        }
+
+        // Function to handle removing ads and checking video playback
+        function checkVideoAndRemoveAds() {
+            const currentHref = window.location.href;
+
+            // Check if URL has changed
+            if (currentHref !== currentUrl) {
+                currentUrl = currentHref;
+                isShortsPage = currentHref.includes("shorts");
+                video = document.querySelector('video'); // Re-fetch video element if necessary
             }
 
-            if (window.location.href.includes("shorts")) {
-                log("Youtube shorts detected, ignoring...");
+            // Check if on YouTube shorts page, ignore if true
+            if (isShortsPage) {
+                log("YouTube shorts detected, ignoring...");
                 return;
             }
 
-            const video = document.querySelector('video');
+            // Check if video element exists and is playing
             if (video && !video.paused) {
+                log("Video detected playing, pausing and playing...");
                 video.pause();
                 video.play();
             }
-        }, 500);
-        removePageAds();
+        }
+
+        // Initial call to remove ads and setup interval with a delay
+        checkVideoAndRemoveAds();
+        setInterval(checkVideoAndRemoveAds, 5000); // Check every 5 seconds instead of every 2 seconds
+        removePageAds(); // Ensure ads are removed initially
     }
 
     function removePageAds() {
@@ -135,7 +155,7 @@
                     el.innerText = `0${time}`;
                 }
             });
-        }, 1000);
+        }, 5000);
     }
 
     function removeUnwantedElements() {
@@ -153,7 +173,7 @@
                 ironOverlayBackdrop.remove();
                 log("Iron overlay backdrop removed");
             }
-        }, 500);
+        }, 5000);
     }
 
     function log(message) {
