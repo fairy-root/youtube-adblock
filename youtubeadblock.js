@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AdBlock for YouTube
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.3
 // @description  removes ads from youtube, and the annoying popups.
 // @author       FairyRoot
 // @match        https://www.youtube.com/*
