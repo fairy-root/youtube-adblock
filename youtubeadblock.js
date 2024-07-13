@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AdBlock for YouTube
 // @namespace    http://tampermonkey.net/
-// @version      1.3
+// @version      1.4
 // @description  removes ads from youtube, and the annoying popups.
 // @author       FairyRoot
 // @match        https://www.youtube.com/*
@@ -11,8 +11,8 @@
 // @grant        none
 // @license MIT
 // @namespace https://github.com/fairy-root
-// @downloadURL https://raw.githubusercontent.com/fairy-root/youtube-adblock/main/youtubeadblock.js
-// @updateURL https://raw.githubusercontent.com/fairy-root/youtube-adblock/main/youtubeadblock.js
+// @downloadURL https://update.greasyfork.org/scripts/499955/AdBlock%20for%20YouTube.user.js
+// @updateURL https://update.greasyfork.org/scripts/499955/AdBlock%20for%20YouTube.meta.js
 // ==/UserScript==
 
 (function() {
@@ -72,7 +72,8 @@
     function removeAds() {
         log("removeAds()");
 
-        let isShortsPage = window.location.href.includes("shorts");
+        let currentUrl = window.location.href;
+        let isShortsPage = currentUrl.includes("shorts");
         let video = document.querySelector('video');
 
         // Initial check and setup
@@ -106,10 +107,9 @@
             }
         }
 
-        // Initial call to remove ads and setup interval with a delay
+        // Initial call to remove ads
         checkVideoAndRemoveAds();
-        setInterval(checkVideoAndRemoveAds, 5000); // Check every 5 seconds instead of every 2 seconds
-        removePageAds(); // Ensure ads are removed initially
+        removePageAds();
     }
 
     function removePageAds() {
