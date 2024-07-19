@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         AdBlock for YouTube
 // @namespace    http://tampermonkey.net/
-// @version      1.4
-// @description  removes ads from youtube, and the annoying popups.
+// @version      1.5
+// @description  removes ads and annoying popups from youtube.
 // @author       FairyRoot
-// @match        https://www.youtube.com/*
+// @match        *://*.youtube.com/*
 // @exclude      *://music.youtube.com/*
 // @exclude      *://*.music.youtube.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=youtube.com
@@ -143,19 +143,6 @@
         document.head.appendChild(style);
 
         sponsor.forEach((el) => el.style.setProperty("display", "none", "important"));
-    }
-
-    function timestampFix() {
-        setInterval(() => {
-            const elements = document.querySelectorAll("ytd-thumbnail-overlay-time-status-renderer");
-            elements.forEach(el => {
-                const time = el.innerText.trim();
-                const parts = time.split(":").map(Number);
-                if (parts.length === 2 && parts[0] < 10) {
-                    el.innerText = `0${time}`;
-                }
-            });
-        }, 5000);
     }
 
     function removeUnwantedElements() {
