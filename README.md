@@ -19,7 +19,6 @@ This userscript removes ads and annoying popups from YouTube, providing a smooth
 
 - Blocks ads on YouTube.
 - Removes annoying popups.
-- Fixes timestamps for easier navigation.
 - Minimal interference with user interactions (play/pause).
 
 ## Installation
@@ -43,7 +42,6 @@ Once installed, the script will automatically run on YouTube pages. You don't ne
 
 - Block video ads.
 - Remove popup messages.
-- Fix timestamp formatting for easier video navigation.
 
 ## Donation
 
